@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "641235589437",
+    "project_id": "my-personal-efootball-727bf",
+    "storage_bucket": "my-personal-efootball-727bf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641235589437:android:440a9e21e4c28fc9c04d54",
+        "android_client_info": {
+          "package_name": "com.adda.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_EM2vJMHzXCQgQ9G6rSWEiFRZRP0zTYw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
