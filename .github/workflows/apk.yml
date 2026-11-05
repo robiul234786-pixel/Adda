@@ -23,6 +23,7 @@ jobs:
           npm init -y
           npm i @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6 @capacitor/push-notifications@6
           npx cap init 'আড্ডা' com.adda.app --web-dir www
+          node -e "const f='capacitor.config.json',c=require('./'+f);c.server={url:'https://robiul234786-pixel.github.io/Adda/'};require('fs').writeFileSync(f,JSON.stringify(c,null,2))"
           npx cap add android
           cp google-services.json android/app/
           sed -i 's#<application#<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/><application#' android/app/src/main/AndroidManifest.xml
