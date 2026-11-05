@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>আড্ডা</title>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#101a2b">
+<style>
+:root{--bg:#101a2b;--cd:#17233a;--bd:#25344f;--tx:#eef2f8;--mu:#8fa0bd;--ac:#ffb020;--lk:#ff5a6e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-t]){--bg:#eef2f8;--cd:#fff;--bd:#d9e1ee;--tx:#14213a;--mu:#5d6b86;color-scheme:light}}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 "Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif}
+#app{max-width:560px;margin:0 auto;padding:14px 14px 96px}
+h1{font-size:26px;margin:4px 0 14px;letter-spacing:.2px}
+button{font:inherit;color:var(--tx);background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:8px 14px;cursor:pointer}
+button:active{transform:scale(.96)}button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.pri{background:var(--ac);color:#241800;border-color:var(--ac);font-weight:700}
+textarea,input{width:100%;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:10px 12px}
+textarea{resize:none;height:84px}
+.box{background:var(--cd);border:1px solid var(--bd);border-radius:16px;padding:12px;margin-bottom:12px}
+.row{display:flex;gap:8px;align-items:center}.sp{justify-content:space-between}
+.av{flex:none;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;font-weight:700;color:#10161f;font-size:19px}
+.pc header{display:flex;gap:10px;align-items:center;cursor:pointer}.pc header small{display:block;color:var(--mu);font-size:13px;line-height:1.2}
+.pc p{margin:10px 0 8px;white-space:pre-wrap;word-break:break-word}
+.pc footer{display:flex;gap:8px}.pc footer button{padding:5px 12px;font-size:15px}.lk{border-color:var(--lk);color:var(--lk)}
+.cm{margin-top:10px;border-top:1px solid var(--bd);padding-top:10px}.cm div{display:flex;gap:8px;margin-bottom:8px;font-size:15px}.cm b{font-weight:600}
+.mu{color:var(--mu);font-size:14px}.cnt{font-size:13px;color:var(--mu);text-align:right}
+.st{display:flex;gap:18px;margin:10px 0}.st b{display:block;font-size:20px}.st span{font-size:13px;color:var(--mu)}
+.fl{background:transparent}.fl.on{background:var(--ac);color:#241800;border-color:var(--ac)}
+#nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;gap:4px;padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px));background:var(--cd);border-top:1px solid var(--bd)}
+#nav button{flex:1;max-width:130px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;font-size:12px;color:var(--mu);padding:4px}
+#nav button span{font-size:22px;line-height:1.1}#nav button.on{color:var(--ac);font-weight:700}
+.sw{display:flex;gap:10px;margin:12px 0}.sw i{width:34px;height:34px;border-radius:50%;cursor:pointer;border:3px solid transparent}.sw i.on{border-color:var(--tx)}
+.hero{text-align:center;padding:40px 8px 10px}.hero .big{font-size:54px;font-weight:800;color:var(--ac);line-height:1}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style></head><body><div id="app"></div><div id="nav"></div>
+<script>
+const $=s=>document.querySelector(s),E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const bd=n=>String(n).replace(/\d/g,c=>'০১২৩৪৫৬৭৮৯'[c]),K='adda1',COL=['#ff7a59','#2dd4bf','#a78bfa','#fbbf24','#60a5fa','#f472b6'];
+let D=null;try{D=JSON.parse(localStorage.getItem(K))}catch(e){}
+if(!D||!D.users){const n=Date.now();D={me:'',users:{
+u1:{n:'রাকিব',c:COL[0],f:['u2']},u2:{n:'সুমি',c:COL[1],f:[]},u3:{n:'তানভীর',c:COL[2],f:['u1']},u4:{n:'নাফিসা',c:COL[3],f:[]}},
+posts:[
+{id:'p1',u:'u2',x:'আজকের আড্ডা জমে গেল! চায়ের সাথে সবাই হাজির ☕',t:n-36e5,l:['u1','u3'],c:[{u:'u1',x:'আমিও ছিলাম, পরেরবার আরও বড় আসর!',t:n-3e6}]},
+{id:'p2',u:'u1',x:'ফাইনালে উঠলাম! সবাই দোয়া করবেন ⚽',t:n-5*36e5,l:['u2'],c:[]},
+{id:'p3',u:'u4',x:'বৃষ্টির দিনে খিচুড়ি আর ইলিশ — আর কী চাই?',t:n-20*36e5,l:[],c:[]}]}}
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}};
+let T='feed',V='',CM='',NC=COL[0],NW=[],NS='',NE='';
+const FB='';
+const fbu=()=>{let v=FB;if(!v){try{v=localStorage.getItem('adda_fb')||''}catch(e){}}return v};
+function setFb(){const v=($('#fbu').value||'').trim().replace(/\/+$/,'');if(!/^https:\/\/[\w.-]+\.(firebaseio\.com|firebasedatabase\.app)$/.test(v)){alert('লিংকটা ঠিক নয়');return}try{localStorage.setItem('adda_fb',v)}catch(e){}NE='';R();pullNews(1)}
+async function pullNews(f){const fb=fbu();if(!fb||!D.me)return;try{const r=await fetch(fb+'/social/news.json?orderBy='+encodeURIComponent('"$key"')+'&limitToLast=40');if(!r.ok)throw 0;const x=await r.json(),l=Object.values(x||{}).filter(n=>n&&n.t&&n.h).map(n=>({t:+n.t,i:String(n.i||'📰'),h:String(n.h).slice(0,200),tn:String(n.tn||'টুর্নামেন্ট'),b:String(n.b||'').slice(0,240)})).sort((a,b)=>b.t-a.t),j=JSON.stringify(l),was=NE;NE='';if(j!==NS||was){NS=j;NW=l;const a=document.activeElement;if(f||!(a&&/INPUT|TEXTAREA/.test(a.tagName)))R()}}catch(e){if(!NE){NE='নিউজ লোড হয়নি, Firebase রুলস দেখুন';const a=document.activeElement;if(!(a&&/INPUT|TEXTAREA/.test(a.tagName)))R()}}}
+const nc=n=>`<article class="box"><div class="mu">📰 ${E(n.tn)} · ${ago(n.t)}</div><p style="margin:6px 0 0"><b>${E(n.i)} ${E(n.h)}</b></p>${n.b?`<p class="mu" style="margin:6px 0 0;white-space:pre-line">${E(n.b)}</p>`:''}</article>`;
+const tbox=()=>!fbu()?`<div class="box"><p style="margin:0 0 8px">📰 টুর্নামেন্ট নিউজের জন্য Firebase লিংক (একবার)</p><div class="row"><input id="fbu" placeholder="https://…firebaseio.com"><button class="pri" onclick="setFb()">সেভ</button></div></div>`:NE?`<p class="mu" style="margin:0 0 10px">📰 ${E(NE)}</p>`:'';
+const ago=t=>{const s=Math.max(0,(Date.now()-t)/1000|0);if(s<60)return'এইমাত্র';const m=s/60|0;if(m<60)return bd(m)+' মিনিট আগে';const h=m/60|0;if(h<24)return bd(h)+' ঘণ্টা আগে';return bd(h/24|0)+' দিন আগে'};
+const av=(id,s)=>{const u=D.users[id];return`<span class="av" style="background:${u.c}${s?`;width:${s}px;height:${s}px;font-size:${s*.45}px`:''}">${E([...u.n][0])}</span>`};
+const fers=id=>Object.keys(D.users).filter(k=>D.users[k].f.includes(id));
+function join(){const n=($('#nm').value||'').trim().slice(0,20);if(!n){$('#nm').focus();return}const id='u'+Date.now().toString(36);D.users[id]={n,c:NC,f:[]};D.me=id;save();R()}
+function post(){const x=($('#px').value||'').trim().slice(0,280);if(!x)return;D.posts.unshift({id:'p'+Date.now().toString(36),u:D.me,x,t:Date.now(),l:[],c:[]});save();R()}
+function like(id){const p=D.posts.find(z=>z.id===id),i=p.l.indexOf(D.me);i<0?p.l.push(D.me):p.l.splice(i,1);save();R()}
+function cm(id){CM=CM===id?'':id;R()}
+function say(id){const x=($('#ci').value||'').trim().slice(0,200);if(!x)return;D.posts.find(z=>z.id===id).c.push({u:D.me,x,t:Date.now()});save();R()}
+function fol(id){const f=D.users[D.me].f,i=f.indexOf(id);i<0?f.push(id):f.splice(i,1);save();R()}
+function go(id){V=id;T='pf';R();scrollTo(0,0)}
+function tab(t){T=t;V='';CM='';R();scrollTo(0,0)}
+function del(id){if(!confirm('পোস্টটা মুছবেন?'))return;D.posts=D.posts.filter(z=>z.id!==id);save();R()}
+function reset(){if(!confirm('সব ডাটা মুছে নতুন করে শুরু করবেন?'))return;localStorage.removeItem(K);location.reload()}
+const cmV=p=>`<div class="cm">${p.c.map(c=>`<div>${av(c.u,28)}<span><b>${E(D.users[c.u].n)}</b> ${E(c.x)}<br><span class="mu">${ago(c.t)}</span></span></div>`).join('')||'<p class="mu" style="margin:0 0 8px">এখনো কোনো মন্তব্য নেই। প্রথমজন হোন।</p>'}<div class="row"><input id="ci" maxlength="200" placeholder="মন্তব্য লিখুন" onkeydown="if(event.key==='Enter')say('${p.id}')"><button class="pri" onclick="say('${p.id}')">পাঠান</button></div></div>`;
+const card=p=>{const u=D.users[p.u],l=p.l.includes(D.me);return`<article class="box pc"><header onclick="go('${p.u}')">${av(p.u)}<div><b>${E(u.n)}</b><small>${ago(p.t)}</small></div></header><p>${E(p.x)}</p><footer><button class="${l?'lk':''}" onclick="like('${p.id}')">${l?'❤️':'🤍'} ${bd(p.l.length)}</button><button onclick="cm('${p.id}')">💬 ${bd(p.c.length)}</button>${p.u===D.me?`<button onclick="del('${p.id}')" style="margin-left:auto">মুছুন</button>`:''}</footer>${CM===p.id?cmV(p):''}</article>`};
+const fbtn=id=>id===D.me?'':`<button class="fl ${D.users[D.me].f.includes(id)?'on':''}" onclick="fol('${id}')">${D.users[D.me].f.includes(id)?'ফলো করছেন':'ফলো করুন'}</button>`;
+function R(){const nav=$('#nav'),app=$('#app');
+if(!D.me){nav.innerHTML='';app.innerHTML=`<div class="hero"><div class="big">আড্ডা</div><p class="mu">বন্ধুদের সাথে পোস্ট, লাইক আর মন্তব্যের জায়গা</p></div><div class="box"><p style="margin:0 0 8px">আপনার নাম</p><input id="nm" maxlength="20" placeholder="যেমন: রবিউল"><div class="sw">${COL.map(c=>`<i class="${c===NC?'on':''}" style="background:${c}" onclick="NC='${c}';R()"></i>`).join('')}</div><button class="pri" style="width:100%" onclick="join()">শুরু করুন</button></div>`;return}
+const b=(k,i,t)=>`<button class="${T===k||(T==='pf'&&k==='me'&&V===D.me)?'on':''}" onclick="${k==='me'?`go('${D.me}')`:`tab('${k}')`}"><span>${i}</span>${t}</button>`;
+nav.innerHTML=b('feed','🏠','ফিড')+b('fol','👥','ফলোয়িং')+b('ppl','🔍','মানুষ')+b('me','🙂','প্রোফাইল');
+const me=D.users[D.me];let h='';
+if(T==='feed'||T==='fol'){const f=me.f.concat(D.me),l=D.posts.filter(p=>T==='feed'||f.includes(p.u)),it=l.map(p=>({t:p.t,h:card(p)})).concat(T==='feed'?NW.map(n=>({t:n.t,h:nc(n)})):[]).sort((a,b)=>b.t-a.t);
+h=`<h1>${T==='feed'?'আড্ডা':'ফলোয়িং'}</h1>`+(T==='feed'?`<div class="box"><div class="row" style="align-items:flex-start">${av(D.me)}<textarea id="px" maxlength="280" placeholder="মনে কী চলছে, ${E(me.n)}?"></textarea></div><div class="row sp" style="margin-top:8px"><span class="mu">সর্বোচ্চ ২৮০ অক্ষর</span><button class="pri" onclick="post()">পোস্ট করুন</button></div></div>`:'')+(T==='feed'?tbox():'')+(it.map(z=>z.h).join('')||'<p class="mu">এখানে কিছু নেই। "মানুষ" ট্যাব থেকে কাউকে ফলো করুন।</p>')}
+else if(T==='ppl'){h='<h1>মানুষ</h1>'+Object.keys(D.users).filter(k=>k!==D.me).map(k=>`<div class="box row sp"><div class="row" onclick="go('${k}')" style="cursor:pointer">${av(k)}<div><b>${E(D.users[k].n)}</b><br><span class="mu">${bd(fers(k).length)} ফলোয়ার</span></div></div>${fbtn(k)}</div>`).join('')}
+else{const id=V||D.me,u=D.users[id],ps=D.posts.filter(p=>p.u===id);h=`<div class="box"><div class="row sp"><div class="row">${av(id,64)}<div><b style="font-size:20px">${E(u.n)}</b></div></div>${fbtn(id)}</div><div class="st"><div><b>${bd(ps.length)}</b><span>পোস্ট</span></div><div><b>${bd(fers(id).length)}</b><span>ফলোয়ার</span></div><div><b>${bd(u.f.length)}</b><span>ফলোয়িং</span></div></div></div>`+(ps.map(card).join('')||'<p class="mu">এখনো কোনো পোস্ট নেই।</p>')+(id===D.me?'<button onclick="reset()" style="margin-top:12px;width:100%">ডাটা মুছে নতুন করে শুরু</button>':'')}
+const k=document.activeElement&&document.activeElement.id;app.innerHTML=h;}
+R();pullNews();setInterval(pullNews,20000);
+if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script></body></html>
