@@ -31,6 +31,7 @@ textarea{resize:none;height:84px}
 .sw{display:flex;gap:10px;margin:12px 0}.sw i{width:34px;height:34px;border-radius:50%;cursor:pointer;border:3px solid transparent}.sw i.on{border-color:var(--tx)}
 .hero{text-align:center;padding:30px 8px 10px}.hero .big{font-size:54px;font-weight:800;color:var(--ac);line-height:1}
 .ms{display:flex;gap:8px;margin-bottom:10px}.ms>div{background:var(--cd);border:1px solid var(--bd);border-radius:14px;padding:6px 12px;max-width:80%;word-break:break-word}.ms.me{flex-direction:row-reverse}.ms.me>div{background:var(--ac);color:#241800;border-color:var(--ac)}
+.pi{display:block;width:100%;max-height:420px;object-fit:cover;border-radius:12px;margin:8px 0;background:var(--bd);min-height:60px}.bt{display:inline-block;border:1px solid var(--bd);border-radius:12px;padding:8px 14px;cursor:pointer;background:var(--cd)}
 .er{color:var(--lk);font-size:14px;margin:0 0 10px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style></head><body><div id="app"></div><div id="nav"></div>
@@ -41,6 +42,7 @@ const bd=n=>String(n).replace(/\d/g,c=>'০১২৩৪৫৬৭৮৯'[c]),K='a
 let D={};try{D=JSON.parse(localStorage.getItem(K))||{}}catch(e){}
 const save=()=>{try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}};
 const fbu=()=>{let v=FB;if(!v)try{v=localStorage.getItem('adda_fb')||''}catch(e){}return v};
+let PI='',PX='';const IMG={};
 let FD={users:{},posts:{},news:{},likes:{},comments:{},follows:{},chat:{}},SJ='',DT=0,T='feed',V='',CM='',OP='',NC=COL[0],NE='';
 const api=(p,m,b,q)=>fetch(fbu()+'/social/'+p+'.json'+(q||''),{method:m||'GET',body:b===undefined?undefined:JSON.stringify(b)}).then(r=>{if(!r.ok)throw 0;return r.json()});
 const Q='?orderBy='+encodeURIComponent('"$key"')+'&limitToLast=';
@@ -53,12 +55,14 @@ const AV=(n,c,s)=>`<span class="av" style="background:${OK(c)}${s?`;width:${s}px
 const who=u=>{const x=FD.users[u];if(x)return x;const p=Object.values(FD.posts).find(z=>z&&z.u===u);return p?{n:p.n,c:p.c}:{n:'বন্ধু',c:'#8fa0bd'}};
 function setFb(){const v=($('#fbu').value||'').trim().replace(/\/+$/,'');if(!/^https:\/\/[\w.-]+\.(firebaseio\.com|firebasedatabase\.app)$/.test(v)){alert('লিংকটা ঠিক নয়');return}try{localStorage.setItem('adda_fb',v)}catch(e){}NE='';R();pull()}
 function join(){const n=($('#nm').value||'').trim().slice(0,20);if(!n){$('#nm').focus();return}const me='u'+rid();D={me,n,c:NC};save();FD.users[me]={n,c:NC};R();api('users/'+me,'PUT',{n,c:NC,t:Date.now()}).catch(err)}
-function post(){const x=($('#px').value||'').trim().slice(0,280);if(!x)return;const id='k'+rid(),o={u:D.me,n:D.n,c:D.c,x,t:Date.now()};FD.posts[id]=o;R();api('posts/'+id,'PUT',o).catch(err)}
+function post(){const x=($('#px').value||'').trim().slice(0,280);if(!x&&!PI)return;const id='k'+rid(),o={u:D.me,n:D.n,c:D.c,x:x||' ',t:Date.now()},im=PI;if(im){o.im=1;IMG[id]=im}PI='';FD.posts[id]=o;R();(im?api('img/'+id,'PUT',im):Promise.resolve()).then(()=>api('posts/'+id,'PUT',o)).catch(err)}
+function pick(inp){const f=inp.files&&inp.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,900/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);PI=c.toDataURL('image/jpeg',.6);const t=$('#px');PX=t?t.value:'';R();const y=$('#px');if(y)y.value=PX};im.src=rd.result};rd.readAsDataURL(f)}
+function loadImgs(){document.querySelectorAll('img[data-i]').forEach(e=>{const id=e.dataset.i;if(IMG[id]){if(!e.getAttribute('src'))e.src=IMG[id];return}if(IMG[id]===0)return;IMG[id]=0;api('img/'+id).then(v=>{if(v){IMG[id]=v;document.querySelectorAll('img[data-i="'+id+'"]').forEach(z=>z.src=v)}else delete IMG[id]}).catch(()=>delete IMG[id])})}
 function like(id){const L=FD.likes[id]=FD.likes[id]||{},p='likes/'+id+'/'+D.me;if(L[D.me]){delete L[D.me];api(p,'DELETE').catch(err)}else{L[D.me]=true;api(p,'PUT',true).catch(err)}R()}
 function say(id){const x=($('#ci').value||'').trim().slice(0,200);if(!x)return;const k='k'+rid(),o={u:D.me,n:D.n,c:D.c,x,t:Date.now()};(FD.comments[id]=FD.comments[id]||{})[k]=o;R();api('comments/'+id+'/'+k,'PUT',o).catch(err)}
 function fol(u){const F=FD.follows[D.me]=FD.follows[D.me]||{},p='follows/'+D.me+'/'+u;if(F[u]){delete F[u];api(p,'DELETE').catch(err)}else{F[u]=true;api(p,'PUT',true).catch(err)}R()}
 function chat(){const x=($('#cx').value||'').trim().slice(0,300);if(!x)return;const k='k'+rid(),o={u:D.me,n:D.n,c:D.c,x,t:Date.now()};FD.chat[k]=o;R();api('chat/'+k,'PUT',o).catch(err)}
-function del(id){if(!confirm('পোস্টটা মুছবেন?'))return;delete FD.posts[id];R();api('posts/'+id,'DELETE').catch(err)}
+function del(id){if(!confirm('পোস্টটা মুছবেন?'))return;delete FD.posts[id];R();api('posts/'+id,'DELETE').then(()=>api('img/'+id,'DELETE')).catch(err)}
 function cm(id){CM=CM===id?'':id;R()}
 function op(id){OP=OP===id?'':id;R()}
 function go(u){V=u;T='pf';R();scrollTo(0,0)}
@@ -66,10 +70,10 @@ function tab(t){T=t;V='';CM='';R();scrollTo(0,0)}
 function reset(){if(!confirm('এই ফোনের প্রোফাইল মুছবেন? (পোস্ট থেকে যাবে)'))return;localStorage.removeItem(K);location.reload()}
 const cmV=(id,C)=>`<div class="cm">${C.map(c=>`<div class="c">${AV(c.n,c.c,28)}<span><b>${E(c.n)}</b> ${E(c.x)}<br><span class="mu">${ago(c.t)}</span></span></div>`).join('')||'<p class="mu" style="margin:0 0 8px">এখনো কোনো মন্তব্য নেই।</p>'}<div class="row"><input id="ci" maxlength="200" placeholder="মন্তব্য লিখুন" onkeydown="if(event.key==='Enter')say('${id}')"><button class="pri" onclick="say('${id}')">পাঠান</button></div></div>`;
 const acts=id=>{const L=lk(id),m=!!L[D.me];return`<footer><button class="${m?'lk':''}" onclick="like('${id}')">${m?'❤️':'🤍'} ${bd(Object.keys(L).length)}</button><button onclick="cm('${id}')">💬 ${bd(cs(id).length)}</button>${FD.posts[id]&&FD.posts[id].u===D.me?`<button onclick="del('${id}')" style="margin-left:auto">মুছুন</button>`:''}</footer>`+(CM===id?cmV(id,cs(id)):'')};
-const pcard=(id,p)=>`<article class="box pc"><div class="hd" onclick="go('${E(p.u)}')">${AV(p.n,p.c)}<div><b>${E(p.n)}</b><small>${ago(p.t)}</small></div></div><p>${E(p.x)}</p>${acts(id)}</article>`;
+const pcard=(id,p)=>`<article class="box pc"><div class="hd" onclick="go('${E(p.u)}')">${AV(p.n,p.c)}<div><b>${E(p.n)}</b><small>${ago(p.t)}</small></div></div><p>${E(p.x)}</p>${p.im?`<img class="pi" data-i="${id}" alt="ছবি"${IMG[id]?` src="${IMG[id]}"`:''}>`:''}${acts(id)}</article>`;
 const ncard=(id,n)=>{const art=String(n.a||n.b||'').split('\n').filter(Boolean),o=OP===id;return`<article class="box pc"><div class="mu">📰 ${E(n.tn)} · ${ago(n.t)}</div><div class="nw" onclick="op('${id}')"><b>${E(n.i)} ${E(n.h)}</b>${!o?'<div class="mu">বিস্তারিত ›</div>':''}</div>${o?`<div class="art">${(art.length?art:['এই পুরনো খবরের বিস্তারিত নেই, নতুন খবর থেকে থাকবে।']).map(l=>`<p>${E(l)}</p>`).join('')}</div>`:''}${acts(id)}</article>`};
 const fbtn=u=>u===D.me?'':`<button class="fl ${(FD.follows[D.me]||{})[u]?'on':''}" onclick="fol('${E(u)}')">${(FD.follows[D.me]||{})[u]?'ফলো করছেন':'ফলো করুন'}</button>`;
-const valid=p=>p&&p.u&&p.x&&p.t;
+const valid=p=>p&&p.u&&p.t&&(p.x||p.im);
 async function pull(){if(!fbu()||!D.me)return;try{const[u,p,n,l,c,f,ch]=await Promise.all([api('users'),api('posts','GET',undefined,Q+'60'),api('news','GET',undefined,Q+'40'),api('likes'),api('comments'),api('follows'),api('chat','GET',undefined,Q+'60')]),nx={users:u||{},posts:p||{},news:n||{},likes:l||{},comments:c||{},follows:f||{},chat:ch||{}},j=JSON.stringify(nx),was=NE;NE='';if(j!==SJ||was){SJ=j;FD=nx;if(typing())DT=1;else R()}}catch(e){if(!NE){NE='সংযোগ হয়নি। Firebase রুলস আপডেট হয়েছে কি দেখুন।';if(!typing())R()}}}
 function R(){const nav=$('#nav'),app=$('#app');
 if(!fbu()){nav.innerHTML='';app.innerHTML=`<div class="hero"><div class="big">আড্ডা</div><p class="mu">শুরুর আগে একবার Firebase লিংক দিন</p></div><div class="box"><div class="row"><input id="fbu" placeholder="https://…firebaseio.com"><button class="pri" onclick="setFb()">সেভ</button></div></div>`;return}
@@ -80,11 +84,11 @@ let h=NE?`<p class="er">${E(NE)}</p>`:'';
 if(T==='feed'||T==='fol'){const f=fl(D.me).concat(D.me);let it=Object.entries(FD.posts).filter(([i,p])=>valid(p)&&(T==='feed'||f.includes(p.u))).map(([i,p])=>({t:p.t,h:pcard(i,p)}));
 if(T==='feed')it=it.concat(Object.entries(FD.news).filter(([i,n])=>n&&n.h&&n.t).map(([i,n])=>({t:n.t,h:ncard(i,n)})));
 it.sort((a,b)=>b.t-a.t);
-h+=`<h1>${T==='feed'?'আড্ডা':'ফলোয়িং'}</h1>`+(T==='feed'?`<div class="box"><div class="row" style="align-items:flex-start">${AV(D.n,D.c)}<textarea id="px" maxlength="280" placeholder="মনে কী চলছে, ${E(D.n)}?"></textarea></div><div class="row sp" style="margin-top:8px"><span class="mu">সর্বোচ্চ ২৮০ অক্ষর</span><button class="pri" onclick="post()">পোস্ট করুন</button></div></div>`:'')+(it.map(z=>z.h).join('')||'<p class="mu">এখানে কিছু নেই। "মানুষ" ট্যাব থেকে কাউকে ফলো করুন।</p>')}
+h+=`<h1>${T==='feed'?'আড্ডা <small class="mu">v3</small>':'ফলোয়িং'}</h1>`+(T==='feed'?`<div class="box"><div class="row" style="align-items:flex-start">${AV(D.n,D.c)}<textarea id="px" maxlength="280" placeholder="মনে কী চলছে, ${E(D.n)}?"></textarea></div>${PI?`<img class="pi" src="${PI}" style="max-height:180px"><button onclick="PI='';R()">ছবি সরান</button>`:''}<div class="row sp" style="margin-top:8px"><label class="bt">📷 ছবি<input type="file" accept="image/*" hidden onchange="pick(this)"></label><button class="pri" onclick="post()">পোস্ট করুন</button></div></div>`:'')+(it.map(z=>z.h).join('')||'<p class="mu">এখানে কিছু নেই। "মানুষ" ট্যাব থেকে কাউকে ফলো করুন।</p>')}
 else if(T==='chat'){const ms=Object.values(FD.chat).filter(m=>m&&m.x&&m.t).sort((a,b)=>a.t-b.t);h+=`<h1>গ্রুপ চ্যাট</h1><div id="cl">${ms.map(m=>`<div class="ms ${m.u===D.me?'me':''}">${AV(m.n,m.c,32)}<div><b style="font-size:13px">${E(m.n)}</b><br>${E(m.x)}<br><span class="mu" style="font-size:12px;color:inherit;opacity:.7">${ago(m.t)}</span></div></div>`).join('')||'<p class="mu">এখনো কেউ কিছু লেখেনি। প্রথম মেসেজটা আপনি দিন।</p>'}</div><div class="row"><input id="cx" maxlength="300" placeholder="মেসেজ লিখুন" onkeydown="if(event.key==='Enter')chat()"><button class="pri" onclick="chat()">পাঠান</button></div>`}
 else if(T==='ppl'){const us=Object.entries(FD.users).filter(([k,u])=>k!==D.me&&u&&u.n);h+='<h1>মানুষ</h1>'+(us.map(([k,u])=>`<div class="box row sp"><div class="row hd" onclick="go('${E(k)}')">${AV(u.n,u.c)}<div><b>${E(u.n)}</b><br><span class="mu">${bd(fers(k).length)} ফলোয়ার</span></div></div>${fbtn(k)}</div>`).join('')||'<p class="mu">এখনো আর কেউ যোগ দেয়নি। বন্ধুদের অ্যাপ দিন।</p>')}
 else{const id=V||D.me,u=id===D.me?{n:D.n,c:D.c}:who(id),ps=Object.entries(FD.posts).filter(([i,p])=>valid(p)&&p.u===id).sort((a,b)=>b[1].t-a[1].t);h+=`<div class="box"><div class="row sp"><div class="row">${AV(u.n,u.c,64)}<b style="font-size:20px">${E(u.n)}</b></div>${fbtn(id)}</div><div class="st"><div><b>${bd(ps.length)}</b><span>পোস্ট</span></div><div><b>${bd(fers(id).length)}</b><span>ফলোয়ার</span></div><div><b>${bd(fl(id).length)}</b><span>ফলোয়িং</span></div></div></div>`+(ps.map(([i,p])=>pcard(i,p)).join('')||'<p class="mu">এখনো কোনো পোস্ট নেই।</p>')+(id===D.me?'<button onclick="reset()" style="margin-top:12px;width:100%">এই ফোনের প্রোফাইল মুছুন</button>':'')}
-app.innerHTML=h;if(T==='chat'){const c=$('#cl');if(c)c.lastElementChild&&c.lastElementChild.scrollIntoView({block:'end'})}}
+app.innerHTML=h;loadImgs();if(T==='chat'){const c=$('#cl');if(c)c.lastElementChild&&c.lastElementChild.scrollIntoView({block:'end'})}}
 R();pull();setInterval(()=>{pull();if(DT&&!typing()){DT=0;R()}},8000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)pull()});
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
