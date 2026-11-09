@@ -317,7 +317,7 @@ function clPC(st){const pc=new RTCPeerConnection(ICE);st.getTracks().forEach(t=>
 async function callStart(u,type){if(CL||IN)return;if(!navigator.mediaDevices){alert('এই ডিভাইসে কল চলবে না');return}let st;try{st=await clMedia(type)}catch(e){alert(type==='v'?'ক্যামেরা ও মাইক্রোফোনের অনুমতি দিন':'মাইক্রোফোনের অনুমতি দিন');return}
 const p=pk(u);CL={p,u,type,st,role:'c',set:0};clBuild(who(u).n,type);const lv=$('#cl_lv');if(lv)lv.srcObject=st;clSt('কল করা হচ্ছে…');
 try{const pc=CL.pc=clPC(st);const o=await pc.createOffer();await pc.setLocalDescription(o);await clIce(pc);if(!CL||CL.pc!==pc)return;
-await api('call/'+p,'PUT',{from:D.me,to:u,type,off:pc.localDescription.sdp,st:'ring',t:Date.now()});await api('callin/'+u,'PUT',{from:D.me,fn:D.n,type,p,t:Date.now()})}catch(e){clEnd();alert('কল শুরু হয়নি');return}
+await api('call/'+p,'PUT',{from:D.me,to:u,type,off:pc.localDescription.sdp,st:'ring',t:Date.now()});await api('callin/'+u,'PUT',{from:D.me,fn:D.n,type,p,t:Date.now()})}catch(e){clEnd();alert('কল শুরু হয়নি: '+(e===0?'Firebase রুলস call/callin-এ লিখতে দিচ্ছে না':(e&&e.message)||String(e)));return}
 CT=Date.now();CI=setInterval(clPoll,1500)}
 async function clPoll(){const c0=CL;if(!c0)return;try{const c=await api('call/'+c0.p);if(CL!==c0)return;if(!c||c.st==='end'){clEnd(1);return}
 if(c0.role==='c'){if(c.ans&&!c0.set){c0.set=1;await c0.pc.setRemoteDescription({type:'answer',sdp:c.ans});clSt('সংযুক্ত হচ্ছে…')}else if(!c0.set&&Date.now()-CT>45000){clSt('উত্তর দেয়নি');clEnd()}}}catch(e){}}
@@ -331,7 +331,7 @@ async function clAcc(){const c=IN;if(!c)return;clearTimeout(c.to);IN=null;const 
 try{const o=await api('call/'+c.p);if(!o||o.st!=='ring'||!o.off){st.getTracks().forEach(t=>t.stop());alert('কলটা আর নেই');return}
 CL={p:c.p,u:c.from,type:c.type,st,role:'r',set:1};clBuild(c.fn,c.type);const lv=$('#cl_lv');if(lv)lv.srcObject=st;clSt('সংযুক্ত হচ্ছে…');
 const pc=CL.pc=clPC(st);await pc.setRemoteDescription({type:'offer',sdp:o.off});const a=await pc.createAnswer();await pc.setLocalDescription(a);await clIce(pc);if(!CL||CL.pc!==pc)return;
-await api('call/'+c.p,'PATCH',{ans:pc.localDescription.sdp,st:'on'});CI=setInterval(clPoll,1500)}catch(e){clEnd();alert('কল ধরা যায়নি')}}
+await api('call/'+c.p,'PATCH',{ans:pc.localDescription.sdp,st:'on'});CI=setInterval(clPoll,1500)}catch(e){clEnd();alert('কল ধরা যায়নি: '+(e===0?'Firebase রুলস আটকাচ্ছে':(e&&e.message)||String(e)))}}
 async function clIn(){if(CL||IN||!D.me||!fbu())return;try{const c=await api('callin/'+D.me);if(!c||!c.p)return;if(Date.now()-c.t>40000){api('callin/'+D.me,'DELETE').catch(()=>{});return}if(CL||IN)return;IN=c;clRing(c)}catch(e){}}
 setInterval(clIn,3000);window.addEventListener('beforeunload',()=>{if(CL)clEnd()});
 /* ---- এক্সট্রা: কভার, About, পিন, মিউট, অডিয়েন্স, ভিডিও, ভয়েস, চ্যাটে ছবি, সাজেশন ---- */
