@@ -338,11 +338,11 @@ setInterval(clIn,3000);window.addEventListener('beforeunload',()=>{if(CL)clEnd()
 let PA='',PV='',VID={},VR=null;
 function vis(p){if(p.u===D.me)return true;if(D.mu&&D.mu[p.u])return false;if(p.a==='f')return!!(FD.follows[D.me]&&FD.follows[D.me][p.u]);return true}
 function cmpKeep(){const t=$('#px');PX=t?t.value:'';R();const y=$('#px');if(y)y.value=PX}
-function pinPost(id){const p=FD.posts[id];if(!p||p.u!==D.me)return;const b={};Object.entries(FD.posts).forEach(([k,q])=>{if(q&&q.u===D.me&&q.pn&&k!==id){q.pn=0;b[k+'/pn']=null}});if(p.pn){p.pn=0;b[id+'/pn']=null}else{p.pn=1;b[id+'/pn']=1}R();api('posts','PATCH',b).catch(err)}
+function pinPost(id){const p=FD.posts[id];if(!p||p.u!==D.me)return;const b={};Object.entries(FD.posts).forEach(([k,q])=>{if(q&&q.u===D.me&&q.pn&&k!==id){q.pn=0;b[k+'/pn']=null}});if(p.pn){p.pn=0;b[id+'/pn']=null}else{p.pn=1;b[id+'/pn']=1}R();Promise.all(Object.entries(b).map(([k,v])=>api('posts/'+k.split('/')[0],'PATCH',{pn:v}))).catch(err)}
 function abEdit(){const o=(FD.users[D.me]||{}).ab||{};const c=prompt('শহর / এলাকা',o.c||'');if(c==null)return;const w=prompt('কাজ',o.w||'');if(w==null)return;const s=prompt('পড়াশোনা',o.s||'');if(s==null)return;const ab={c:c.trim().slice(0,30),w:w.trim().slice(0,30),s:s.trim().slice(0,30)};(FD.users[D.me]=FD.users[D.me]||{}).ab=ab;R();api('users/'+D.me+'/ab','PUT',ab).catch(err)}
 function cvPick(inp){rz(inp,900,.6,d=>{IMG['cv_'+D.me]=d;(FD.users[D.me]=FD.users[D.me]||{}).cv=1;R();api('img/cv_'+D.me,'PUT',d).then(()=>api('users/'+D.me+'/cv','PUT',1)).catch(err)})}
 function muteU(u){D.mu=D.mu||{};if(D.mu[u])delete D.mu[u];else D.mu[u]=1;save();R()}
-function vpick(inp){const f=inp.files&&inp.files[0];if(!f)return;if(f.size>3e6){alert('ভিডিও ৩ MB এর বেশি হবে না, ছোট ক্লিপ দিন');return}const rd=new FileReader();rd.onload=()=>{PV=rd.result;cmpKeep()};rd.readAsDataURL(f)}
+function vpick(inp){const f=inp.files&&inp.files[0];if(!f)return;if(f.size>2e6){alert('ভিডিও ২ MB এর বেশি হবে না, ছোট ক্লিপ দিন');return}const rd=new FileReader();rd.onload=()=>{PV=rd.result;cmpKeep()};rd.readAsDataURL(f)}
 async function vidPlay(id,el){el.textContent='লোড হচ্ছে…';try{const v=VID[id]||await api('img/v_'+id);if(!v){el.textContent='ভিডিও পাওয়া যায়নি';return}VID[id]=v;R()}catch(e){el.textContent='লোড হয়নি, আবার চাপুন'}}
 function mSend(pre,tag,data){const mk=rid(),k='k'+rid(),o={u:D.me,n:D.n,c:D.c,x:'{'+tag+':'+mk+'}',t:Date.now()},dm=T==='dm',p=dm?'dm/'+pk(V)+'/'+k:'chat/'+k;IMG[pre+mk]=data;(dm?FD.dm:FD.chat)[k]=o;R();api('img/'+pre+mk,'PUT',data).then(()=>api(p,'PUT',o)).catch(err)}
 function mImg(inp){rz(inp,700,.55,d=>mSend('dm_','i',d))}
