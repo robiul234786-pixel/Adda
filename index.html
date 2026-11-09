@@ -40,6 +40,49 @@ textarea{resize:none;height:84px}
 .stk{font-size:44px;line-height:1.15;display:block}.stp{font-size:18px;font-weight:700;display:block;color:var(--ac)}
 .bar{height:8px;border-radius:9px;background:var(--bd);overflow:hidden;margin-top:4px}.bar i{display:block;height:100%;background:var(--ac)}
 select{font:inherit}button:disabled{opacity:.45}
+/* ===== নতুন UI: গ্লাস + গ্রেডিয়েন্ট মডেল ===== */
+:root{--bg:#0a0e1f;--cd:#121933;--bd:rgba(255,255,255,.09);--tx:#f1f4ff;--mu:#97a3c4;--ac:#8b6cff;--ac2:#ff4d8d;--lk:#ff4d8d;--gr:linear-gradient(135deg,#7c5cff 0%,#ff4d8d 65%,#ffb020 100%)}
+@media (prefers-color-scheme:light){:root{--bg:#f1f3fb;--cd:#ffffff;--bd:rgba(20,30,70,.09);--tx:#141a33;--mu:#66708f;--ac:#6d4aff}}
+html,body{background:radial-gradient(800px 460px at 90% -8%,rgba(124,92,255,.25),transparent 70%),radial-gradient(640px 460px at -12% 6%,rgba(255,77,141,.16),transparent 70%),var(--bg);background-attachment:fixed;font-family:"Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif}
+#app{padding:14px 14px 118px}
+h1{font-size:30px;letter-spacing:-.4px;margin:4px 2px 14px;background:var(--gr);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+h1 small{-webkit-text-fill-color:var(--mu);font-size:12px}
+h3{margin:18px 2px 8px;font-size:16px}
+.box{border-radius:22px;background:linear-gradient(165deg,color-mix(in srgb,var(--cd) 92%,#fff 8%),var(--cd));border:1px solid var(--bd);box-shadow:0 14px 34px -22px rgba(0,0,0,.7);padding:14px}
+button{border-radius:14px;border:1px solid var(--bd);background:color-mix(in srgb,var(--cd) 88%,#fff 12%);transition:transform .12s,background .2s}
+button:active{transform:scale(.95)}
+.pri{background:var(--gr)!important;color:#fff!important;border:0!important;box-shadow:0 8px 20px -8px rgba(124,92,255,.8);font-weight:700}
+textarea,input,select{border-radius:16px;border:1px solid var(--bd);background:color-mix(in srgb,var(--bg) 60%,var(--cd))}
+textarea:focus,input:focus{border-color:var(--ac);outline:0;box-shadow:0 0 0 3px rgba(124,92,255,.22)}
+textarea{height:70px}
+.av{box-shadow:0 0 0 2px var(--cd),0 0 0 4px rgba(139,108,255,.75)}
+.hd small{font-size:12.5px}.hd b{font-size:16px}
+.pc{padding:14px 14px 10px}.pc p{font-size:16.5px;line-height:1.6;margin:12px 2px 10px}
+.pc footer{flex-wrap:wrap;gap:6px;border-top:1px solid var(--bd);padding-top:10px;margin-top:6px}
+.pc footer button{border-radius:99px;padding:6px 13px;font-size:14px;white-space:nowrap;display:inline-flex;align-items:center;gap:5px;background:transparent}
+.lk{background:rgba(255,77,141,.12)!important;border-color:var(--lk);color:var(--lk)}
+.pi{border-radius:18px;max-height:460px}
+.cm{border-top:1px solid var(--bd)}
+.ht{color:var(--ac2);font-weight:600}
+.mu{color:var(--mu)}
+.st{background:color-mix(in srgb,var(--cd) 90%,#fff 10%);border:1px solid var(--bd);border-radius:18px;padding:10px 16px;justify-content:space-around;gap:10px}
+.st b{background:var(--gr);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fl.on{background:var(--gr);color:#fff;border:0}
+#nav{left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));border-radius:28px;border:1px solid var(--bd);background:color-mix(in srgb,var(--cd) 78%,transparent);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);box-shadow:0 18px 44px -14px rgba(0,0,0,.65);padding:6px 4px;gap:0}
+#nav button{border-radius:20px;padding:6px 2px;color:var(--mu);border:0;background:transparent;min-width:0}
+#nav button span{font-size:21px;transition:transform .2s;filter:grayscale(.5) opacity(.8)}
+#nav button.on{background:rgba(139,108,255,.18);color:var(--tx)}
+#nav button.on span{transform:translateY(-2px) scale(1.15);filter:none}
+.ms>div{border-radius:20px 20px 20px 6px;border:1px solid var(--bd);padding:8px 13px}
+.ms.me>div{background:var(--gr);color:#fff;border:0;border-radius:20px 20px 6px 20px}
+.ms.me>div .mu,.ms.me>div b{color:#ffffffcc}
+.hero .big{background:var(--gr);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:60px}
+.xg button{border-radius:22px;padding:18px 8px;background:linear-gradient(165deg,color-mix(in srgb,var(--cd) 90%,#fff 10%),var(--cd))}
+.bar i{background:var(--gr)}
+.fb{background:rgba(139,108,255,.2)}
+.stk{filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))}
+.bt{border-radius:14px}
+::-webkit-scrollbar{width:0;height:0}
 </style></head><body><div id="app"></div><div id="nav"></div>
 <script>
 const FB='https://my-personal-efootball-default-rtdb.firebaseio.com';
@@ -54,7 +97,7 @@ const fbu=()=>{let v=FB;if(!v)try{v=localStorage.getItem('adda_fb')||''}catch(e)
 let PI='',PX='';const IMG={};
 let FD={users:{},posts:{},news:{},likes:{},comments:{},follows:{},chat:{},dm:{},stories:{}},SJ='',DT=0,T='feed',V='',CM='',OP='',NC=COL[0],NE='';
 let SQ='',RP='';const rs=['❤️','👍','😂','😮','😢','😡'],le=t=>{const z=$('#le');if(z)z.textContent=t};
-const tx=s=>E(s).replace(/#([\p{L}\p{N}_]+)/gu,'<a class="ht" onclick="ht(\'$1\')">#$1</a>'),ht=q=>{SQ='#'+q;T='ppl';V='';CM='';R();scrollTo(0,0)};
+const tx=s=>E(s).replace(/#([\p{L}\p{M}\p{N}_]+)/gu,'<a class="ht" onclick="ht(\'$1\')">#$1</a>'),ht=q=>{SQ='#'+q;T='ppl';V='';CM='';R();scrollTo(0,0)};
 const hs=async s=>{try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('adda'+s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){let h=5381;for(const c of 'adda'+s)h=h*33^c.charCodeAt(0);return'x'+(h>>>0)}};
 const api=(p,m,b,q)=>fetch(fbu()+'/social/'+p+'.json'+(q||''),{method:m||'GET',body:b===undefined?undefined:JSON.stringify(b)}).then(r=>{if(!r.ok)throw 0;return r.json()});
 const Q='?orderBy='+encodeURIComponent('"$key"')+'&limitToLast=';
@@ -218,7 +261,7 @@ if(T==='xm'){app.innerHTML=xmView();if(XTAB==='inv')qrDraw();if(XTAB==='lroom')l
 if(T==='feed'){const h=app.querySelector('h1');if(h)h.insertAdjacentHTML('afterend',feedX())}
 if(T==='pf'){const id=V||D.me,st=app.querySelector('.st');if(st){const t=totXP(id);st.insertAdjacentHTML('afterend',`<div class="mu" style="margin-bottom:6px">🏅 লেভেল ${bd(lvl(t))} · ${bd(t)} XP${(FD.users[id]||{}).bd?' · 🎂 '+E(FD.users[id].bd):''}</div>`)}const db=app.querySelector('button[onclick^="dm("]');if(db&&id!==D.me){const b=document.createElement('button');b.textContent='🎮 চ্যালেঞ্জ';b.style.marginLeft='6px';b.onclick=()=>XA.chTo(id);db.insertAdjacentElement('afterend',b)}}
 if(T==='chat'||T==='dm'){const i=$('#cx')||$('#dx');if(i&&i.parentNode){const b=document.createElement('button');b.textContent='🎭';b.onclick=()=>XA.tray();i.insertAdjacentElement('afterend',b)}}
-const ids=[];app.querySelectorAll('.pc footer').forEach(f=>{const rb=f.querySelector('button[onclick^="rx("]');if(!rb)return;const id=(/rx\('([^']+)'\)/.exec(rb.getAttribute('onclick'))||[])[1],p=FD.posts[id];if(!id||!p)return;ids.push(id);if(p.u!==D.me){const r=document.createElement('button');r.textContent='🚩';r.onclick=()=>XA.rpt(id);f.appendChild(r);if(AD()){const d=document.createElement('button');d.textContent='🗑 অ্যাডমিন';d.style.marginLeft='auto';d.onclick=()=>del(id);f.appendChild(d)}}});
+const ids=[];app.querySelectorAll('.pc footer').forEach(f=>{const rb=f.querySelector('button[onclick^="rx("]');if(!rb)return;const id=(/rx\('([^']+)'\)/.exec(rb.getAttribute('onclick'))||[])[1],p=FD.posts[id];if(!id||!p)return;ids.push(id);if(p.u!==D.me){const r=document.createElement('button');r.textContent='🚩';r.onclick=()=>XA.rpt(id);f.appendChild(r);if(AD()){const d=document.createElement('button');d.textContent='🗑';d.title='অ্যাডমিন: মুছুন';d.style.marginLeft='auto';d.onclick=()=>del(id);f.appendChild(d)}}});
 let seen={};try{seen=JSON.parse(localStorage.getItem('adda_seen'))||{}}catch(e){}ids.forEach(id=>{if(!seen[id]&&FD.posts[id]&&FD.posts[id].u!==D.me){VQ[id+'/'+D.me]=1;seen[id]=1}});const ks=Object.keys(seen);if(ks.length>600)ks.slice(0,200).forEach(k=>delete seen[k]);try{localStorage.setItem('adda_seen',JSON.stringify(seen))}catch(e){}}
 setInterval(()=>{const k=Object.keys(VQ);if(!k.length||!fbu())return;const b=VQ;VQ={};api('an','PATCH',b).catch(()=>{Object.assign(VQ,b)})},8000);
 async function anLoad(){const ids=Object.entries(FD.posts).filter(([i,p])=>valid(p)&&p.u===D.me).sort((a,b)=>b[1].t-a[1].t).slice(0,10).map(x=>x[0]);await Promise.all(ids.map(i=>api('an/'+i).then(r=>{AN[i]=r||{}}).catch(()=>{})));if(T==='xm'&&XTAB==='an')R()}
