@@ -83,6 +83,7 @@ textarea{height:70px}
 .stk{filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))}
 .bt{border-radius:14px}
 ::-webkit-scrollbar{width:0;height:0}
+html,body{overflow-x:hidden;max-width:100%}#app{min-width:0;overflow-x:hidden}.box{min-width:0;max-width:100%}.box select{max-width:140px}
 </style></head><body><div id="app"></div><div id="nav"></div>
 <script>
 const FB='https://my-personal-efootball-default-rtdb.firebaseio.com';
@@ -398,7 +399,7 @@ if(X2==='ev'){const a=Object.entries(EV).filter(([k,e])=>e&&e.ti).sort((a,b)=>St
 return back}
 function zx(){const app=$('#app');if(!app||!D.me||!fbu())return;
 if(T==='xm'){if(X2){app.innerHTML=zpage();loadImgs();return}const h=app.firstElementChild;if(h&&h.tagName==='H1'&&h.textContent==='আরও')app.insertAdjacentHTML('beforeend',`<div class="xg"><button onclick="x2('sv')">🔖<br>সেভ করা</button><button onclick="x2('g')">👪<br>গ্রুপ</button><button onclick="x2('p')">📄<br>পেজ</button><button onclick="x2('mk')">🛒<br>মার্কেটপ্লেস</button><button onclick="x2('jb')">💼<br>জব</button><button onclick="x2('mem')">🕰<br>আজকের স্মৃতি</button><button onclick="x2('ev')">📅<br>ইভেন্ট</button><button onclick="zthm()">🌗<br>থিম: ${D.th==='l'?'লাইট':D.th==='d'?'ডার্ক':'অটো'}</button><button onclick="x2('bl')">🚫<br>ব্লক তালিকা</button></div>`);return}
-if(T==='feed'){const pb=app.querySelector('button[onclick="post()"]');if(pb)pb.insertAdjacentHTML('beforebegin','<select onchange="zfeel(this)" style="width:auto;padding:8px"><option value="">😊 ফিলিং</option><option>😊 খুশি অনুভব করছি —</option><option>😢 মন খারাপ —</option><option>😍 ভালোবাসায় —</option><option>🤩 উচ্ছ্বসিত —</option><option>😴 ক্লান্ত —</option><option>🍽 খাচ্ছি —</option><option>✈️ ঘুরতে গেছি —</option></select>')}
+if(T==='feed'){const pb=app.querySelector('button[onclick="post()"]');if(pb){const pr=pb.parentElement;if(pr){pr.style.flexWrap='wrap';pr.querySelectorAll('.row').forEach(e=>e.style.flexWrap='wrap')}}if(pb)pb.insertAdjacentHTML('beforebegin','<select onchange="zfeel(this)" style="width:auto;padding:8px"><option value="">😊 ফিলিং</option><option>😊 খুশি অনুভব করছি —</option><option>😢 মন খারাপ —</option><option>😍 ভালোবাসায় —</option><option>🤩 উচ্ছ্বসিত —</option><option>😴 ক্লান্ত —</option><option>🍽 খাচ্ছি —</option><option>✈️ ঘুরতে গেছি —</option></select>')}
 if(T==='pf'){const id=V||D.me,u=FD.users[id]||{},st=app.querySelector('.st');if(id!==D.me){if(st&&u.ls)st.insertAdjacentHTML('beforebegin',`<div class="mu" style="margin-bottom:6px">${Date.now()-u.ls<120000?'🟢 অনলাইন':'⚪ শেষ দেখা '+ago(u.ls)}</div>`);const db=app.querySelector('button[onclick^="dm("]');if(db)db.insertAdjacentHTML('afterend',` <button onclick="blk('${E(id)}')">${D.bl&&D.bl[id]?'✅ আনব্লক':'🚫 ব্লক'}</button>`)}}
 app.querySelectorAll('.pc footer').forEach(f=>{const rb=f.querySelector('button[onclick^="rx("]');if(!rb)return;const id=(/rx\('([^']+)'\)/.exec(rb.getAttribute('onclick'))||[])[1];if(!id)return;const b=document.createElement('button');b.textContent=D.sv&&D.sv[id]?'🔖✓':'🔖';b.onclick=()=>svp(id);f.appendChild(b)})}
 const R3=R;R=function(){R3();try{zx()}catch(e){console.warn('adda-z',e)}};
