@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="bn"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>আড্ডা</title><!-- v6 -->
+<title>আড্ডা</title><!-- v7-fb -->
 <link rel="manifest" href="manifest.json"><meta name="theme-color" content="#101a2b">
 <style>
 :root{--bg:#101a2b;--cd:#17233a;--bd:#25344f;--tx:#eef2f8;--mu:#8fa0bd;--ac:#ffb020;--lk:#ff5a6e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);color-scheme:dark}
@@ -456,4 +456,6 @@ return `<div class="rlc">${m}<div class="rls"><div><button onclick="rx('${i}')">
 function msgTop(){const us=Object.entries(FD.users).filter(([k,u])=>k!==D.me&&u&&u.n).slice(0,15);return `<div class="nt">${us.map(([k,u])=>`<div onclick="dm('${E(k)}')">${AV(u.n,u.c,52,k)}<div>${E(u.n.split(' ')[0])}</div></div>`).join('')}</div>`}
 function dbH(ps){let l=0,c=0;ps.forEach(([i])=>{l+=Object.keys(lk(i)).length;c+=cs(i).length});return `<h3 style="margin:10px 14px">ক্রিয়েটর ড্যাশবোর্ড</h3><div class="dbg"><div>পোস্ট<b>${bd(ps.length)}</b></div><div>ফলোয়ার<b>${bd(fers(D.me).length)}</b></div><div>লাইক<b>${bd(l)}</b></div><div>মন্তব্য<b>${bd(c)}</b></div></div><div style="height:10px"></div>`}
 hdInit();
+
+(async()=>{try{if(localStorage.getItem('adda_ui')==='fb1')return;localStorage.setItem('adda_ui','fb1');if(navigator.serviceWorker){const r=await navigator.serviceWorker.getRegistrations();for(const x of r)await x.unregister()}if(window.caches){for(const k of await caches.keys())await caches.delete(k)}location.reload()}catch(e){}})();
 </script></body></html>
