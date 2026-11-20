@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="bn"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>আড্ডা</title><!-- v8-fb -->
+<title>আড্ডা</title><!-- v10-fb -->
 <link rel="manifest" href="manifest.json"><meta name="theme-color" content="#101a2b">
 <style>
 :root{--bg:#101a2b;--cd:#17233a;--bd:#25344f;--tx:#eef2f8;--mu:#8fa0bd;--ac:#ffb020;--lk:#ff5a6e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);color-scheme:dark}
@@ -129,6 +129,31 @@ h1{background:none!important;-webkit-text-fill-color:var(--tx);color:var(--tx);d
 .nt2 .av{box-shadow:none}.od{position:absolute;right:6px;top:38px;width:13px;height:13px;border-radius:50%;background:#31a24c;border:2px solid var(--bg)}
 .mr{display:flex;gap:12px;align-items:center;padding:8px 14px;cursor:pointer}.mr .av{box-shadow:none}.mr b{font-size:16px}.mr .mu{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62vw}
 .gav{width:54px;height:54px;border-radius:50%;background:var(--gr);display:grid;place-items:center;font-size:24px;flex:none}
+
+.ow{position:relative;display:inline-block;flex:none}.od2{position:absolute;right:1px;bottom:1px;width:14px;height:14px;background:#31a24c;border:2px solid var(--cd);border-radius:50%}
+.bd2{position:absolute;top:2px;right:16%;background:#e41e3f;color:#fff;font-size:10px;font-style:normal;border-radius:9px;padding:1px 5px;line-height:1.3}
+#nav button{position:relative}
+.fq .ow .av,.mr .ow .av,.nt2 .ow .av{box-shadow:none}
+
+/* ===== ডেমোর মতো ফ্ল্যাট লুক ===== */
+:root{--bg:#f0f2f5;--cd:#fff;--tx:#111;--mu:#65676b;--bd:#e4e6eb;--ac:#6c47ff;--chip:#e4e6eb;--lk:#6c47ff;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#18191a;--cd:#242526;--tx:#e4e6eb;--mu:#b0b3b8;--bd:#3a3b3c;--chip:#3a3b3c;color-scheme:dark}}
+html,body{background:var(--bg)!important;background-image:none!important;color:var(--tx)}
+#hd .lg{background:none!important;-webkit-text-fill-color:var(--ac);color:var(--ac);font-size:28px}
+#hd button,#nav,#hd{background-image:none}
+button{background:var(--chip);border:0;color:var(--tx);border-radius:8px;box-shadow:none}
+#hd button{background:var(--chip)!important;border-radius:50%}
+#nav button{background:transparent}#nav button.on{background:transparent}
+.pri,button.pri{background:var(--ac)!important;background-image:none!important;color:#fff!important;box-shadow:none!important;border:0}
+.chips .on{background:var(--ac);color:#fff}
+.av{box-shadow:none!important}
+.box,#app .box{background:var(--cd)!important;background-image:none!important;border:0!important;box-shadow:none!important;border-radius:0}
+textarea,input,select{background:var(--chip);border:0;color:var(--tx)}
+#px{border-radius:22px}
+.bt{background:var(--chip);border:0}
+.pc footer button{color:var(--mu);background:transparent}.pc footer button.lk{color:var(--ac);font-weight:700}
+.srow{background:var(--cd)}
+.bar i,.gav{background:var(--ac)}
 </style></head><body><div id="hd"></div><div id="app"></div><div id="nav"></div>
 <script>
 const FB='https://my-personal-efootball-default-rtdb.firebaseio.com';
@@ -226,11 +251,11 @@ if(T==='fol'){h+=frH()}else if(T==='rl'){h+=rlH()}else if(T==='feed'){const f=fl
 if(T==='feed')it=it.concat(Object.entries(FD.news).filter(([i,n])=>n&&n.h&&n.t).map(([i,n])=>({t:n.t,h:ncard(i,n)})));
 it.sort((a,b)=>b.t-a.t);
 h+=`<h1 style="display:none">আড্ডা</h1>`+(T==='feed'?stH():'')+(T==='feed'?`<div class="box"><div class="row" style="align-items:flex-start">${AV(D.n,D.c,0,D.me)}<textarea id="px" maxlength="280" placeholder="মনে কী চলছে, ${E(D.n)}?"></textarea></div>${PI?`<img class="pi" src="${PI}" style="max-height:180px"><button onclick="PI='';R()">ছবি সরান</button>`:''}<div class="row sp" style="margin-top:8px"><label class="bt">📷 ছবি<input type="file" accept="image/*" hidden onchange="pick(this)"></label><button class="pri" onclick="post()">পোস্ট করুন</button></div></div>`:'')+(it.map(z=>z.h).join('')||'<p class="mu">এখানে কিছু নেই। "মানুষ" ট্যাব থেকে কাউকে ফলো করুন।</p>')}
-else if(T==='ms'){h+=msH()}else if(T==='dm'){const ms=Object.entries(FD.dm).filter(([k,m])=>m&&m.x&&m.t).sort((a,b)=>a[1].t-b[1].t);h+=`<h1 style="display:flex;align-items:center;gap:8px"><button onclick="tab('ms')">‹</button>${E(who(V).n)}<span style="margin-left:auto"><button onclick="callStart('${E(V)}','a')">📞</button> <button onclick="callStart('${E(V)}','v')">🎥</button></span></h1><div id="cl">${ms.map(([k,m])=>`<div class="ms ${m.u===D.me?'me':''}">${AV(m.n,m.c,32,m.u)}<div>${stk(m.x)}<br><span class="mu" style="font-size:12px;color:inherit;opacity:.7">${ago(m.t)}</span></div></div>`).join('')||'<p class="mu">প্রথম মেসেজটা আপনি দিন।</p>'}</div><div class="row"><input id="dx" maxlength="300" placeholder="মেসেজ লিখুন" onkeydown="if(event.key==='Enter')dmS()"><button class="pri" onclick="dmS()">পাঠান</button></div>`}
+else if(T==='ms'){h+=msH()}else if(T==='dm'){const ms=Object.entries(FD.dm).filter(([k,m])=>m&&m.x&&m.t).sort((a,b)=>a[1].t-b[1].t);h+=`<h1 style="display:flex;align-items:center;gap:8px"><button onclick="tab('ms')">‹</button>${E(who(V).n)}<small style="font-size:12px;font-weight:400;color:var(--mu);-webkit-text-fill-color:var(--mu)">${presTxt(V)}</small><span style="margin-left:auto"><button onclick="callStart('${E(V)}','a')">📞</button> <button onclick="callStart('${E(V)}','v')">🎥</button></span></h1><div id="cl">${ms.map(([k,m])=>`<div class="ms ${m.u===D.me?'me':''}">${AV(m.n,m.c,32,m.u)}<div>${stk(m.x)}<br><span class="mu" style="font-size:12px;color:inherit;opacity:.7">${ago(m.t)}</span></div></div>`).join('')||'<p class="mu">প্রথম মেসেজটা আপনি দিন।</p>'}</div><div class="row"><input id="dx" maxlength="300" placeholder="মেসেজ লিখুন" onkeydown="if(event.key==='Enter')dmS()"><button class="pri" onclick="dmS()">পাঠান</button></div>`}
 else if(T==='noti'){const it=[];Object.entries(FD.posts).filter(([i,p])=>valid(p)&&p.u===D.me).forEach(([i])=>{cs(i).forEach(c=>{if(c.u!==D.me)it.push({t:c.t,h:`💬 <b>${E(c.n)}</b> আপনার পোস্টে মন্তব্য করেছেন: ${E(c.x)}`})});Object.entries(lk(i)).forEach(([u,v])=>{if(u!==D.me)it.push({t:0,h:`${v===true?'❤️':v} <b>${E(who(u).n)}</b> আপনার পোস্টে রিঅ্যাক্ট করেছেন`})})});fers(D.me).forEach(u=>it.push({t:0,h:`👥 <b>${E(who(u).n)}</b> আপনাকে ফলো করছেন`}));it.sort((a,b)=>b.t-a.t);h+='<h1>নোটিশ</h1>'+(it.slice(0,60).map(z=>`<div class="box" style="margin-bottom:8px">${z.h}${z.t?`<div class="mu">${ago(z.t)}</div>`:''}</div>`).join('')||'<p class="mu">এখনো কোনো নোটিশ নেই।</p>')}
 else if(T==='chat'){const ms=Object.entries(FD.chat).filter(([k,m])=>m&&m.x&&m.t).sort((a,b)=>a[1].t-b[1].t);h+=`<div class="mh"><button onclick="tab('ms')">‹</button><b>👥 গ্রুপ চ্যাট</b></div><div id="cl">${ms.map(([k,m])=>`<div class="ms ${m.u===D.me?'me':''}">${AV(m.n,m.c,32,m.u)}<div><b style="font-size:13px">${E(m.n)}${vbd(m.u)}</b><br>${stk(m.x)}<br><span class="mu" style="font-size:12px;color:inherit;opacity:.7">${ago(m.t)}</span>${m.u===D.me?` <a onclick="delm('${k}')" style="cursor:pointer">✕</a>`:''}</div></div>`).join('')||'<p class="mu">এখনো কেউ কিছু লেখেনি। প্রথম মেসেজটা আপনি দিন।</p>'}</div><div class="row"><input id="cx" maxlength="300" placeholder="মেসেজ লিখুন" onkeydown="if(event.key==='Enter')chat()"><button class="pri" onclick="chat()">পাঠান</button></div>`}
 else if(T==='ppl'){const q=SQ.toLowerCase(),us=Object.entries(FD.users).filter(([k,u])=>k!==D.me&&u&&u.n&&(!q||u.n.toLowerCase().includes(q))),ps=q?Object.entries(FD.posts).filter(([i,p])=>valid(p)&&String(p.x).toLowerCase().includes(q)).sort((a,b)=>b[1].t-a[1].t):[];h+='<h1>খুঁজুন</h1><input id="sq" value="'+E(SQ)+'" placeholder="নাম বা #ট্যাগ খুঁজুন" oninput="SQ=this.value;R();const z=$(\'#sq\');z.focus();z.setSelectionRange(99,99)" style="margin-bottom:12px">'+us.map(([k,u])=>`<div class="box row sp"><div class="row hd" onclick="go('${E(k)}')">${AV(u.n,u.c,0,k)}<div><b>${E(u.n)}${vbd(k)}</b><br><span class="mu">${bd(fers(k).length)} ফলোয়ার</span>${u.b?`<br><span class="mu">${E(u.b)}</span>`:''}</div></div>${fbtn(k)}</div>`).join('')+ps.map(([i,p])=>pcard(i,p)).join('')||(h+'<p class="mu">কিছু পাওয়া যায়নি।</p>')}
-else{const id=V||D.me,me=id===D.me,u=me?{n:D.n,c:D.c,b:D.b}:who(id),ps=Object.entries(FD.posts).filter(([i,p])=>valid(p)&&p.u===id).sort((a,b)=>((b[1].pn?1e15:0)+b[1].t)-((a[1].pn?1e15:0)+a[1].t));h+=`<div class="box"><div class="row sp"><div class="row">${AV(u.n,u.c,64,id)}<b style="font-size:20px">${E(u.n)}${vbd(id)}</b></div>${fbtn(id)}</div>${u.b?`<p style="margin:8px 0 0">${E(u.b)}</p>`:''}<div class="st"><div><b>${bd(ps.length)}</b><span>পোস্ট</span></div><div><b>${bd(fers(id).length)}</b><span>ফলোয়ার</span></div><div><b>${bd(fl(id).length)}</b><span>ফলোয়িং</span></div></div>${me?'<label class="bt">📷 ছবি<input type="file" accept="image/*" hidden onchange="pa(this)"></label> <button onclick="bio()">✏️ বায়ো</button> <button onclick="adopt()">পুরনো পোস্ট ফিরিয়ে আনুন</button>':`<button onclick="dm('${E(id)}')">💬 মেসেজ</button>`}${me?vbtn():''}${me&&isAd(D.me)?vPanel():''}${!me&&isAd(D.me)&&!isAd(id)?admBtn(id):''}</div>`+(me?dbH(ps):'')+(ps.map(([i,p])=>pcard(i,p)).join('')||'<p class="mu">এখনো কোনো পোস্ট নেই।</p>')+(me?'<button onclick="reset()" style="margin-top:12px;width:100%">লগআউট</button>':'')}
+else{const id=V||D.me,me=id===D.me,u=me?{n:D.n,c:D.c,b:D.b}:who(id),ps=Object.entries(FD.posts).filter(([i,p])=>valid(p)&&p.u===id).sort((a,b)=>((b[1].pn?1e15:0)+b[1].t)-((a[1].pn?1e15:0)+a[1].t));h+=`<div class="box"><div class="row sp"><div class="row">${AV(u.n,u.c,64,id)}<b style="font-size:20px">${E(u.n)}${vbd(id)}</b></div>${frBtn(id)}${fbtn(id)}</div><div class="mu" style="margin-top:4px">${presTxt(id)}</div>${u.b?`<p style="margin:8px 0 0">${E(u.b)}</p>`:''}<div class="st"><div><b>${bd(ps.length)}</b><span>পোস্ট</span></div><div><b>${bd(fers(id).length)}</b><span>ফলোয়ার</span></div><div><b>${bd(fl(id).length)}</b><span>ফলোয়িং</span></div></div>${me?'<label class="bt">📷 ছবি<input type="file" accept="image/*" hidden onchange="pa(this)"></label> <button onclick="bio()">✏️ বায়ো</button> <button onclick="adopt()">পুরনো পোস্ট ফিরিয়ে আনুন</button>':`<button onclick="dm('${E(id)}')">💬 মেসেজ</button>`}${me?vbtn():''}${me&&isAd(D.me)?vPanel():''}${!me&&isAd(D.me)&&!isAd(id)?admBtn(id):''}</div>`+(me?dbH(ps):'')+(ps.map(([i,p])=>pcard(i,p)).join('')||'<p class="mu">এখনো কোনো পোস্ট নেই।</p>')+(me?'<button onclick="reset()" style="margin-top:12px;width:100%">লগআউট</button>':'')}
 app.innerHTML=h+svH();loadImgs();if(T==='chat'||T==='dm'){const c=$('#cl');if(c)c.lastElementChild&&c.lastElementChild.scrollIntoView({block:'end'})}}
 let RL=0;function reg(){const P=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.PushNotifications;if(!P||!D.me)return;if(!RL){RL=1;P.addListener('registration',t=>api('tokens/'+D.me,'PUT',{k:t.value,t:Date.now()}).catch(()=>{}))}P.requestPermissions().then(r=>{if(r.receive==='granted')P.register()}).catch(()=>{})}
 /* ===== আড্ডা এক্সট্রা মডিউল ===== */
@@ -459,16 +484,8 @@ app.querySelectorAll('.pc footer').forEach(f=>{const rb=f.querySelector('button[
 const R3=R;R=function(){R3();try{zx()}catch(e){console.warn('adda-z',e)}};
 const zp=()=>{if(D.me&&fbu()&&!document.hidden)api('users/'+D.me+'/ls','PUT',Date.now()).catch(()=>{})};setInterval(zp,60000);setTimeout(zp,3000);R();
 
-let FT='rq',FH={};
+
 function hdInit(){$('#hd').innerHTML='<span class="lg">আড্ডা</span><span><button onclick="tab(\'feed\');setTimeout(()=>{const x=$(\'#px\');x&&x.focus()},50)">＋</button><button onclick="tab(\'ppl\')">🔍</button><button onclick="D.th=D.th===\'l\'?\'d\':\'l\';save();zth()">☰</button></span>'}
-function frH(){const F=FD.follows[D.me]||{},f=fl(D.me),rq=fers(D.me).filter(u=>!F[u]&&!FH[u]&&FD.users[u]&&FD.users[u].n);
-const ch=[['rq','রিকোয়েস্ট'],['sg','সাজেশন'],['ls','আপনার ফলোয়িং'],['ps','ফলোয়িং পোস্ট']].map(([k,t])=>`<button class="${FT===k?'on':''}" onclick="FT='${k}';R()">${t}</button>`).join('');
-let b='';
-if(FT==='rq')b=`<h3 style="margin:6px 14px">${bd(rq.length)}টি ফলোয়ার রিকোয়েস্ট</h3>`+(rq.map(u=>{const w=who(u);return `<div class="fq">${AV(w.n,w.c,64,u)}<div style="flex:1"><b>${E(w.n)}</b><div class="mu">${bd(fers(u).length)} ফলোয়ার</div><div class="bb"><button class="pri" onclick="fol('${E(u)}')">কনফার্ম করুন</button><button onclick="FH['${E(u)}']=1;R()">মুছুন</button></div></div></div>`}).join('')||'<p class="mu" style="padding:0 14px">কোনো নতুন রিকোয়েস্ট নেই।</p>');
-else if(FT==='sg')b=sugg()||'<p class="mu" style="padding:0 14px">সাজেশন নেই।</p>';
-else if(FT==='ls')b=f.map(u=>{const w=who(u);return `<div class="fq">${AV(w.n,w.c,52,u)}<div style="flex:1"><b>${E(w.n)}</b><div class="bb">${fbtn(u)}<button onclick="dm('${E(u)}')">💬</button></div></div></div>`}).join('')||'<p class="mu" style="padding:0 14px">কাউকে ফলো করেননি।</p>';
-else{const ff=f.concat(D.me);b=Object.entries(FD.posts).filter(([i,p])=>valid(p)&&ff.includes(p.u)).sort((a,c)=>c[1].t-a[1].t).map(([i,p])=>pcard(i,p)).join('')||'<p class="mu" style="padding:0 14px">কিছু নেই।</p>'}
-return `<h1>ফ্রেন্ড</h1><div class="chips">${ch}</div>`+b}
 function rlH(){const it=Object.entries(FD.posts).filter(([i,p])=>valid(p)&&(p.vd||p.im)).sort((a,b)=>b[1].t-a[1].t).slice(0,20);
 return `<h1 style="margin-bottom:6px">রিলস</h1>`+(it.map(([i,p])=>{const m=p.vd?(VID[i]?`<video src="${VID[i]}" controls autoplay loop playsinline></video>`:`<div class="bt" onclick="vidPlay('${i}',this)">▶ ভিডিও চালান</div>`):`<img class="pi" data-i="${E(p.ri||i)}"${IMG[p.ri||i]?` src="${IMG[p.ri||i]}"`:''}>`;
 return `<div class="rlc">${m}<div class="rls"><div><button onclick="rx('${i}')">👍</button>${bd(Object.keys(lk(i)).length)}</div><div><button onclick="cm('${i}');tab('feed')">💬</button>${bd(cs(i).length)}</div><div><button onclick="sh('${i}')">↗️</button></div></div><div class="rlb"><div class="row">${AV(p.n,p.c,36,p.u)}<b>${E(p.n)}</b>${p.u!==D.me?fbtn(p.u):''}</div><p style="margin:6px 0 0">${E(p.x||'')}</p></div></div>`}).join('')||'<p class="mu" style="padding:0 14px">এখনো কোনো রিল (ছবি/ভিডিও পোস্ট) নেই।</p>')}
@@ -477,14 +494,50 @@ function dbH(ps){let l=0,c=0;ps.forEach(([i])=>{l+=Object.keys(lk(i)).length;c+=
 hdInit();
 
 
-let MQ='';
-function msH(){const F=FD.follows[D.me]||{},q=MQ.toLowerCase(),us=Object.entries(FD.users).filter(([k,u])=>k!==D.me&&u&&u.n&&(!q||u.n.toLowerCase().includes(q))).sort((a,b)=>(F[b[0]]?1:0)-(F[a[0]]?1:0)),
+
+
+let FR={},FS={},PR={},FSIG='',FT='rq',FH={},MQ='';
+const onl=u=>u===D.me||!!(PR[u]&&Date.now()-PR[u]<75000);
+const presTxt=u=>onl(u)?'🟢 অনলাইন':(PR[u]?'⚪ শেষ দেখা '+ago(PR[u]):'⚪ অফলাইন');
+const isFr=u=>!!(FS[D.me]&&FS[D.me][u]),sentTo=u=>!!(FR[u]&&FR[u][D.me]),gotFrom=u=>!!(FR[D.me]&&FR[D.me][u]);
+const dotAV=(n,c,z,u)=>`<span class="ow">${AV(n,c,z,u)}${onl(u)?'<i class="od2"></i>':''}</span>`;
+function frDo(u,a){const me=D.me,ok=()=>{};
+if(a==='add'){(FR[u]=FR[u]||{})[me]=Date.now();api('fr/'+u+'/'+me,'PUT',Date.now()).catch(err)}
+else if(a==='cancel'){if(FR[u])delete FR[u][me];api('fr/'+u+'/'+me,'DELETE').catch(err)}
+else if(a==='rej'){if(FR[me])delete FR[me][u];api('fr/'+me+'/'+u,'DELETE').catch(err)}
+else if(a==='acc'){if(FR[me])delete FR[me][u];(FS[me]=FS[me]||{})[u]=true;(FS[u]=FS[u]||{})[me]=true;Promise.all([api('friends/'+me+'/'+u,'PUT',true),api('friends/'+u+'/'+me,'PUT',true),api('fr/'+me+'/'+u,'DELETE')]).catch(err)}
+else if(a==='un'){if(!confirm('ফ্রেন্ড থেকে সরাবেন?'))return;if(FS[me])delete FS[me][u];if(FS[u])delete FS[u][me];Promise.all([api('friends/'+me+'/'+u,'DELETE'),api('friends/'+u+'/'+me,'DELETE')]).catch(err)}
+FSIG='';R()}
+function frBtn(u){if(!u||u===D.me)return'';const e=E(u);
+if(isFr(u))return `<button onclick="frDo('${e}','un')">✓ ফ্রেন্ড</button>`;
+if(sentTo(u))return `<button onclick="frDo('${e}','cancel')">অনুরোধ বাতিল</button>`;
+if(gotFrom(u))return `<button class="pri" onclick="frDo('${e}','acc')">কনফার্ম</button>`;
+return `<button class="pri" onclick="frDo('${e}','add')">➕ ফ্রেন্ড যোগ করুন</button>`}
+const frList=()=>Object.keys(FS[D.me]||{}).filter(u=>FD.users[u]&&FD.users[u].n);
+const usrs=()=>Object.entries(FD.users).filter(([k,u])=>k!==D.me&&u&&u.n);
+function frH(){const rq=Object.entries(FR[D.me]||{}).filter(([u])=>FD.users[u]&&FD.users[u].n).sort((a,b)=>b[1]-a[1]),f=frList(),on=usrs().filter(([k])=>onl(k)).sort((a,b)=>(isFr(b[0])?1:0)-(isFr(a[0])?1:0));
+const ch=[['rq','রিকোয়েস্ট'+(rq.length?' ('+bd(rq.length)+')':'')],['sg','সাজেশন'],['ls','ফ্রেন্ড'],['on','অনলাইন ('+bd(on.length)+')'],['ps','পোস্ট']].map(([k,t])=>`<button class="${FT===k?'on':''}" onclick="FT='${k}';R()">${t}</button>`).join('');
+const row=(u,x)=>{const w=who(u);return `<div class="fq"><span onclick="go('${E(u)}')">${dotAV(w.n,w.c,60,u)}</span><div style="flex:1"><b>${E(w.n)}${vbd(u)}</b><div class="mu">${x}</div></div></div>`};
+let b='';
+if(FT==='rq')b=`<h3 style="margin:6px 14px">${bd(rq.length)}টি ফ্রেন্ড রিকোয়েস্ট</h3>`+(rq.map(([u,t])=>{const w=who(u);return `<div class="fq"><span onclick="go('${E(u)}')">${dotAV(w.n,w.c,64,u)}</span><div style="flex:1"><b>${E(w.n)}${vbd(u)}</b> <span class="mu">${ago(t)}</span><div class="bb"><button class="pri" onclick="frDo('${E(u)}','acc')">কনফার্ম করুন</button><button onclick="frDo('${E(u)}','rej')">মুছুন</button></div></div></div>`}).join('')||'<p class="mu" style="padding:0 14px">কোনো নতুন রিকোয়েস্ট নেই।</p>');
+else if(FT==='sg'){const l=usrs().filter(([k])=>!isFr(k)&&!gotFrom(k)).slice(0,40);b=`<h3 style="margin:6px 14px">যাদের চিনতে পারেন</h3>`+(l.map(([k,u])=>`<div class="fq"><span onclick="go('${E(k)}')">${dotAV(u.n,u.c,60,k)}</span><div style="flex:1"><b>${E(u.n)}${vbd(k)}</b><div class="bb">${frBtn(k)}</div></div></div>`).join('')||'<p class="mu" style="padding:0 14px">সাজেশন নেই।</p>')}
+else if(FT==='ls')b=`<h3 style="margin:6px 14px">${bd(f.length)} জন ফ্রেন্ড</h3>`+(f.sort((a,c)=>(onl(c)?1:0)-(onl(a)?1:0)).map(u=>{const w=who(u);return `<div class="fq"><span onclick="go('${E(u)}')">${dotAV(w.n,w.c,56,u)}</span><div style="flex:1"><b>${E(w.n)}${vbd(u)}</b><div class="mu">${presTxt(u)}</div></div><button onclick="dm('${E(u)}')">💬</button></div>`}).join('')||'<p class="mu" style="padding:0 14px">এখনো কোনো ফ্রেন্ড নেই। সাজেশন থেকে যোগ করুন।</p>');
+else if(FT==='on')b=`<h3 style="margin:6px 14px">🟢 এখন অনলাইন</h3>`+(on.map(([k,u])=>row(k,isFr(k)?'ফ্রেন্ড · অনলাইন':'অনলাইন')).join('')||'<p class="mu" style="padding:0 14px">এখন কেউ অনলাইনে নেই।</p>');
+else{const ff=new Set(f.concat(fl(D.me),[D.me]));b=Object.entries(FD.posts).filter(([i,p])=>valid(p)&&ff.has(p.u)).sort((a,c)=>c[1].t-a[1].t).map(([i,p])=>pcard(i,p)).join('')||'<p class="mu" style="padding:0 14px">কিছু নেই।</p>'}
+return `<h1>ফ্রেন্ড</h1><div class="chips">${ch}</div>`+b}
+function msH(){const q=MQ.toLowerCase(),us=usrs().filter(([k,u])=>!q||u.n.toLowerCase().includes(q)).sort((a,b)=>(onl(b[0])?2:0)+(isFr(b[0])?1:0)-(onl(a[0])?2:0)-(isFr(a[0])?1:0)),
 g=Object.values(FD.chat).filter(m=>m&&m.x&&m.t).sort((a,b)=>b.t-a.t)[0],pv=g?(/^\{/.test(g.x)?'মিডিয়া পাঠিয়েছেন':E(g.x)):'গ্রুপে মেসেজ করুন';
 return `<div class="mh"><b style="font-size:26px">মেসেজ</b></div><div class="mq"><input id="msq" placeholder="খুঁজুন" value="${E(MQ)}" oninput="MQ=this.value;R();const z=$('#msq');z.focus();z.setSelectionRange(99,99)"></div>`
-+`<div class="nt2">${us.slice(0,12).map(([k,u])=>`<div onclick="dm('${E(k)}')">${AV(u.n,u.c,56,k)}<div>${E(u.n.split(' ')[0])}</div></div>`).join('')}</div>`
++`<div class="nt2">${us.slice(0,14).map(([k,u])=>`<div onclick="dm('${E(k)}')">${dotAV(u.n,u.c,56,k)}<div>${E(u.n.split(' ')[0])}</div></div>`).join('')}</div>`
 +`<div class="mr" onclick="tab('chat')"><div class="gav">👥</div><div><b>গ্রুপ চ্যাট</b><div class="mu">${g?E(g.n)+': ':''}${pv}</div></div></div>`
-+us.map(([k,u])=>`<div class="mr" onclick="dm('${E(k)}')">${AV(u.n,u.c,54,k)}<div><b>${E(u.n)}${vbd(k)}</b><div class="mu">${F[k]?'আপনি ফলো করছেন':'মেসেজ করতে ট্যাপ করুন'}</div></div></div>`).join('')}
++us.map(([k,u])=>`<div class="mr" onclick="dm('${E(k)}')">${dotAV(u.n,u.c,54,k)}<div><b>${E(u.n)}${vbd(k)}</b><div class="mu">${presTxt(k)}${isFr(k)?' · ফ্রেন্ড':''}</div></div></div>`).join('')}
+function badge(){const n=Object.keys(FR[D.me]||{}).length,b=$('#nav')&&$('#nav').children[1];if(b&&!b.querySelector('.bd2')&&n)b.insertAdjacentHTML('beforeend',`<i class="bd2">${bd(n)}</i>`)}
+{const R0=R;R=function(){R0.apply(this,arguments);try{badge()}catch(e){}}}
+async function pcPull(){if(!fbu()||!D.me)return;try{const[a,b,c]=await Promise.all([api('fr'),api('friends'),api('pres')]);FR=a||{};FS=b||{};PR=c||{};const sg=JSON.stringify([FR,FS,Object.keys(PR).filter(onl)]);if(sg!==FSIG){FSIG=sg;if(!typing()&&['fol','ms','pf','ppl'].includes(T))R();else badge()}}catch(e){}}
+async function pcBeat(){if(!fbu()||!D.me||document.hidden)return;try{const t=Date.now();await api('pres/'+D.me,'PUT',t);PR[D.me]=t}catch(e){}}
+setInterval(pcPull,12000);setInterval(pcBeat,30000);document.addEventListener('visibilitychange',()=>{if(!document.hidden){pcBeat();pcPull()}});setTimeout(()=>{pcBeat();pcPull()},1500);
+
 feedX=()=>'';
 {const o=sugg;sugg=()=>T==='fol'?o():''}
-(async()=>{try{if(localStorage.getItem('adda_ui')==='fb2')return;localStorage.setItem('adda_ui','fb2');if(navigator.serviceWorker){const r=await navigator.serviceWorker.getRegistrations();for(const x of r)await x.unregister()}if(window.caches){for(const k of await caches.keys())await caches.delete(k)}location.reload()}catch(e){}})();
+(async()=>{try{if(localStorage.getItem('adda_ui')==='fb4')return;localStorage.setItem('adda_ui','fb4');if(navigator.serviceWorker){const r=await navigator.serviceWorker.getRegistrations();for(const x of r)await x.unregister()}if(window.caches){for(const k of await caches.keys())await caches.delete(k)}location.reload()}catch(e){}})();
 </script></body></html>
