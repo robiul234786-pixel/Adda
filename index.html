@@ -84,6 +84,20 @@ textarea{height:70px}
 .bt{border-radius:14px}
 ::-webkit-scrollbar{width:0;height:0}
 html,body{overflow-x:hidden;max-width:100%}#app{min-width:0;overflow-x:hidden}.box{min-width:0;max-width:100%}.box select{max-width:140px}
+/* ===== Facebook-স্টাইল টপ ট্যাব ও ফ্ল্যাট কার্ড ===== */
+#nav{top:0;bottom:auto;left:0;right:0;border-radius:0;border:0;border-bottom:1px solid var(--bd);padding:env(safe-area-inset-top,0px) 0 0;background:var(--cd);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 1px 6px rgba(0,0,0,.18);z-index:50;gap:0}
+#nav button{max-width:none;border-radius:0;font-size:0!important;padding:10px 0 8px;border-bottom:3px solid transparent;position:relative}
+#nav button span{font-size:23px;filter:none;transform:none!important}
+#nav button.on{background:transparent;border-bottom-color:var(--ac);color:var(--ac)}
+#nav button:not(.on) span{filter:grayscale(1) opacity(.7)}
+#app{padding:calc(58px + env(safe-area-inset-top,0px)) 0 40px;max-width:560px}
+#app>*{margin-left:0;margin-right:0}
+h1{margin:12px 14px}
+#app .box{border-radius:0;border-left:0;border-right:0;box-shadow:none;margin-bottom:8px;background:var(--cd)}
+.av{box-shadow:0 0 0 2px var(--cd),0 0 0 4px var(--ac)}
+.pc footer{border-top:1px solid var(--bd);padding-top:8px;justify-content:space-around}
+.pc footer button{flex:1;border:0;background:transparent;border-radius:8px;color:var(--mu)}
+.pc footer button.lk{color:var(--ac)}
 </style></head><body><div id="app"></div><div id="nav"></div>
 <script>
 const FB='https://my-personal-efootball-default-rtdb.firebaseio.com';
