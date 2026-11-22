@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>আড্ডা – খেলা</title>
+<style>
+:root{--bg:#f4f1fa;--card:#fff;--ink:#1d1630;--mute:#6f6788;--line:#e4def2;--pri:#6c3fd1;--live:#e5383b;--goal:#1b9e5a}
+@media (prefers-color-scheme:dark){:root{--bg:#120d1f;--card:#1c1530;--ink:#f1ecfb;--mute:#a79fc0;--line:#2e2548;--pri:#a98bf5}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,"Noto Sans Bengali",sans-serif;overflow-x:hidden}
+header{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:10px 14px}
+h1{margin:0;font-size:20px;color:var(--pri)}
+.tabs{display:flex;gap:8px;margin-top:8px}
+.tabs button{flex:1;padding:8px;border:1px solid var(--line);background:none;color:var(--ink);border-radius:20px;font:inherit}
+.tabs button.on{background:var(--pri);border-color:var(--pri);color:#fff}
+main{padding:10px 12px 40px;max-width:640px;margin:auto}
+.lg{margin:14px 2px 6px;font-weight:700;font-size:13px;color:var(--mute)}
+.m{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:8px;overflow:hidden}
+.row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:12px;cursor:pointer}
+.t{display:flex;align-items:center;gap:6px;min-width:0}
+.t.r{justify-content:flex-end;text-align:right}
+.t img{width:22px;height:22px;object-fit:contain}
+.t span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc{text-align:center;min-width:64px}
+.sc b{font-size:18px}
+.st{font-size:12px;color:var(--mute)}
+.st.live{color:var(--live);font-weight:700}
+.det{border-top:1px solid var(--line);padding:10px 12px;display:none}
+.m.open .det{display:block}
+.ev{display:flex;gap:8px;padding:5px 0;font-size:14px}
+.ev .mn{width:38px;color:var(--mute);flex:none}
+.ev.g{color:var(--goal);font-weight:700}
+.ev small{color:var(--mute);font-weight:400}
+.sub{margin:10px 0 4px;font-weight:700;font-size:13px;color:var(--mute)}
+.n{display:flex;gap:10px;padding:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:8px;color:inherit;text-decoration:none}
+.n img{width:84px;height:60px;object-fit:cover;border-radius:8px;flex:none}
+.n b{display:block;font-size:14px}
+.n small{color:var(--mute)}
+.nl{display:block;padding:6px 0;color:var(--pri);text-decoration:none;font-size:14px}
+.em{text-align:center;color:var(--mute);padding:30px 10px}
+</style>
+</head>
+<body>
+<header>
+  <h1>খেলা</h1>
+  <div class="tabs"><button id="tm" class="on">ম্যাচ</button><button id="tn">খবর</button></div>
+</header>
+<main id="app"></main>
+<script>
+// ALL Sports-এর সাইট; আলাদা হলে এখানে বদলান
+const API = 'https://all-sports.pages.dev/api/adda-sports';
+const app = document.getElementById('app');
+let tab = 'm', matches = [], news = [], timer;
+
+const esc = s => { const d = document.createElement('div'); d.textContent = s == null ? '' : s; return d.innerHTML; };
+const bd = n => String(n).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+const hm = iso => bd(new Date(iso).toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit', hour12:false, timeZone:'Asia/Dhaka'}));
+const LIVE = ['1H','2H','HT','ET','BT','P','LIVE'];
+const get = async p => { const r = await fetch(API + p); if (!r.ok) throw 0; return r.json(); };
+
+function status(m){
+  if (LIVE.includes(m.status)) return `<span class="st live">${m.status==='HT'?'বিরতি':'লাইভ '+bd(m.min||'')+'’'}</span>`;
+  if (['FT','AET','PEN'].includes(m.status)) return '<span class="st">শেষ</span>';
+  if (m.status==='NS'||m.status==='TBD') return `<span class="st">${hm(m.time)}</span>`;
+  return `<span class="st">${esc(m.status)}</span>`;
+}
+
+function renderMatches(){
+  if (!matches.length){ app.innerHTML = '<div class="em">আজ কোনো ম্যাচ নেই।</div>'; return; }
+  const by = {};
+  matches.forEach(m => (by[m.country+' – '+m.league] ||= []).push(m));
+  app.innerHTML = Object.keys(by).map(k => `<div class="lg">${esc(k)}</div>` + by[k].map(m => {
+    const has = m.hg != null;
+    return `<div class="m" data-id="${m.id}">
+      <div class="row">
+        <div class="t"><img src="${esc(m.hLogo)}" alt=""><span>${esc(m.home)}</span></div>
+        <div class="sc"><b>${has ? bd(m.hg)+' - '+bd(m.ag) : 'vs'}</b><br>${status(m)}</div>
+        <div class="t r"><span>${esc(m.away)}</span><img src="${esc(m.aLogo)}" alt=""></div>
+      </div>
+      <div class="det"></div></div>`;
+  }).join('')).join('');
+  app.querySelectorAll('.m').forEach(el => el.querySelector('.row').onclick = () => openMatch(el));
+}
+
+const ICON = e => e.type==='Goal' ? (e.detail==='Own Goal'?'⚽ (আত্মঘাতী)':e.detail==='Missed Penalty'?'❌':'⚽')
+  : e.type==='Card' ? (e.detail.includes('Red')?'🟥':'🟨') : e.type==='subst' ? '🔄' : '📺';
+
+async function openMatch(el){
+  const open = el.classList.toggle('open');
+  if (!open) return;
+  const det = el.querySelector('.det');
+  det.innerHTML = '<div class="em">লোড হচ্ছে…</div>';
+  const m = matches.find(x => x.id == el.dataset.id);
+  try {
+    const [ev, nw] = await Promise.all([get('?type=events&id='+m.id), news.length ? news : get('?type=news')]);
+    news = nw;
+    const words = [m.home, m.away].map(s => s.toLowerCase());
+    const rel = nw.filter(a => words.some(w => (a.title+' '+(a.desc||'')).toLowerCase().includes(w))).slice(0,4);
+    det.innerHTML =
+      '<div class="sub">ঘটনা</div>' +
+      (ev.length ? ev.map(e => `<div class="ev ${e.type==='Goal'?'g':''}"><span class="mn">${bd(e.min)}${e.extra?'+'+bd(e.extra):''}’</span><span>${ICON(e)} ${esc(e.player||'')} <small>${esc(e.team)}${e.type==='subst'&&e.assist?' ← '+esc(e.assist):''}</small></span></div>`).join('') : '<div class="st">এখনো কোনো ঘটনা নেই।</div>') +
+      '<div class="sub">ম্যাচ সংক্রান্ত খবর</div>' +
+      (rel.length ? rel.map(a => `<a class="nl" href="${esc(a.link)}" target="_blank" rel="noopener">${esc(a.title)}</a>`).join('') : '<div class="st">এই ম্যাচের আলাদা খবর পাওয়া যায়নি।</div>');
+  } catch(e){ det.innerHTML = '<div class="em">লোড করা যায়নি। আবার চেষ্টা করুন।</div>'; }
+}
+
+function renderNews(){
+  app.innerHTML = news.length ? news.map(a => `<a class="n" href="${esc(a.link)}" target="_blank" rel="noopener">${a.img?`<img src="${esc(a.img)}" alt="">`:''}<div><b>${esc(a.title)}</b><small>${esc(a.desc||'')}</small></div></a>`).join('') : '<div class="em">খবর পাওয়া যায়নি।</div>';
+}
+
+async function load(){
+  try {
+    if (tab==='m'){ matches = await get('?type=matches'); const open=[...app.querySelectorAll('.m.open')].map(e=>e.dataset.id); renderMatches(); open.forEach(id=>{const e=app.querySelector(`.m[data-id="${id}"]`); if(e) openMatch(e);}); }
+    else { news = await get('?type=news'); renderNews(); }
+  } catch(e){ app.innerHTML = '<div class="em">ডেটা আনা যায়নি। ইন্টারনেট চেক করে আবার চেষ্টা করুন।</div>'; }
+}
+
+function setTab(t){
+  tab = t;
+  document.getElementById('tm').classList.toggle('on', t==='m');
+  document.getElementById('tn').classList.toggle('on', t==='n');
+  app.innerHTML = '<div class="em">লোড হচ্ছে…</div>';
+  load();
+}
+document.getElementById('tm').onclick = () => setTab('m');
+document.getElementById('tn').onclick = () => setTab('n');
+setTab('m');
+clearInterval(timer);
+timer = setInterval(() => { if (tab==='m' && !document.hidden) load(); }, 60000);
+</script>
+</body>
+</html>
